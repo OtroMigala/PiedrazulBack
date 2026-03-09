@@ -1,0 +1,244 @@
+### ================================================================
+### Piedrazul API — HU2: Registrar cita como agendador
+###
+### INSTRUCCIONES:
+### 1. Ejecutar la API: dotnet run (desde Piedrazul.API)
+### 2. Copiar el token del paso 2 y pegarlo en @token
+### 3. Copiar el doctorId del paso 3 y pegarlo en @doctorId
+### 4. Ejecutar cada request con el botón "Send Request"
+### ================================================================
+
+@baseUrl    = http://localhost:5071
+@testDate   = 2026-03-16
+
+# ── Pegar aquí los valores después de ejecutar los pasos 2 y 3 ──
+@token      = PEGAR_TOKEN_AQUI
+@doctorId   = PEGAR_DOCTOR_ID_AQUI
+
+
+### ================================================================
+### SETUP 1 — Crear usuario admin (ejecutar solo una vez)
+### ================================================================
+# @name createAdmin
+POST {{baseUrl}}/api/seed/admin
+Content-Type: application/json
+
+###
+
+### ================================================================
+### SETUP 2 — Login → copiar el valor de "token" y pegarlo arriba
+### ================================================================
+# @name login
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "admin123"
+}
+
+###
+
+### ================================================================
+### SETUP 3 — Crear doctor de prueba → copiar "doctorId" y pegarlo arriba
+### ================================================================
+# @name createDoctor
+POST {{baseUrl}}/api/seed/doctor
+Authorization: Bearer {{token}}
+
+###
+
+### ================================================================
+### SETUP 4 — Agregar horario: Lunes 08:00–17:00
+### (dayOfWeek: 1 = Lunes. testDate 2026-03-16 es un lunes)
+### ================================================================
+POST {{baseUrl}}/api/doctors/{{doctorId}}/schedules
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "dayOfWeek": 1,
+  "startTime": "08:00:00",
+  "endTime": "17:00:00"
+}
+
+###
+
+### ================================================================
+### SETUP 5 — Verificar doctor activo en la lista
+### ================================================================
+GET {{baseUrl}}/api/doctors
+Authorization: Bearer {{token}}
+
+###
+
+
+### ================================================================
+### CA2.5 — Obtener slots disponibles (08:00, 08:30, 09:00 …)
+### Esperado: 200 con array de strings ["08:00","08:30",...]
+### ================================================================
+GET {{baseUrl}}/api/scheduling/slots?doctorId={{doctorId}}&date={{testDate}}
+Authorization: Bearer {{token}}
+
+###
+
+### ================================================================
+### CA2.1+2.2+2.3+2.4 — Crear cita para PACIENTE NUEVO
+###   - doc 12345678 no existe → el sistema lo crea (CA2.1)
+###   - documentId, fullName, phone, gender son obligatorios (CA2.2)
+###   - birthDate y email son null/opcionales (CA2.3)
+###   - agendador selecciona médico, fecha y hora (CA2.4)
+### Esperado: 201 Created con appointmentId
+### ================================================================
+POST {{baseUrl}}/api/appointments
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "documentId": "12345678",
+  "fullName": "María López Torres",
+  "phone": "3001234567",
+  "gender": 1,
+  "birthDate": null,
+  "email": null,
+  "doctorId": "{{doctorId}}",
+  "date": "2026-03-16T00:00:00",
+  "time": "08:00:00"
+}
+
+###
+
+### ================================================================
+### CA2.2 — Error: campos obligatorios vacíos
+### Esperado: 400 Bad Request con lista de errores de validación
+### ================================================================
+POST {{baseUrl}}/api/appointments
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "documentId": "",
+  "fullName": "",
+  "phone": "",
+  "gender": 0,
+  "birthDate": null,
+  "email": null,
+  "doctorId": "{{doctorId}}",
+  "date": "2026-03-16T00:00:00",
+  "time": "09:00:00"
+}
+
+###
+
+### ================================================================
+### CA2.3 — Error: email con formato inválido
+### Esperado: 400 Bad Request
+### ================================================================
+POST {{baseUrl}}/api/appointments
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "documentId": "99999999",
+  "fullName": "Pedro Ruiz",
+  "phone": "3109876543",
+  "gender": 0,
+  "birthDate": null,
+  "email": "correo-invalido",
+  "doctorId": "{{doctorId}}",
+  "date": "2026-03-16T00:00:00",
+  "time": "10:00:00"
+}
+
+###
+
+### ================================================================
+### CA2.6 — Intentar reservar slot YA ocupado (mismo médico, fecha y hora)
+### Esperado: 409 Conflict
+### ================================================================
+POST {{baseUrl}}/api/appointments
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "documentId": "87654321",
+  "fullName": "Otro Paciente",
+  "phone": "3119876543",
+  "gender": 0,
+  "birthDate": null,
+  "email": null,
+  "doctorId": "{{doctorId}}",
+  "date": "2026-03-16T00:00:00",
+  "time": "08:00:00"
+}
+
+###
+
+### ================================================================
+### CA2.7 — Verificar cita en el listado del día
+### Esperado: 200 con array que incluye la cita recién creada
+### ================================================================
+GET {{baseUrl}}/api/appointments?date={{testDate}}
+Authorization: Bearer {{token}}
+
+###
+
+### ================================================================
+### CA2.7 — Listado filtrado por médico y fecha
+### ================================================================
+GET {{baseUrl}}/api/appointments/by-doctor?doctorId={{doctorId}}&date={{testDate}}
+Authorization: Bearer {{token}}
+
+###
+
+### ================================================================
+### CA2.5+CA2.6 — Slots después de crear cita: 08:00 debe estar ocupado
+### Esperado: el slot "08:00" ya NO aparece en la lista
+### ================================================================
+GET {{baseUrl}}/api/scheduling/slots?doctorId={{doctorId}}&date={{testDate}}
+Authorization: Bearer {{token}}
+
+###
+
+### ================================================================
+### CA2.8 — Sin token → debe rechazar con 401 Unauthorized
+### ================================================================
+POST {{baseUrl}}/api/appointments
+Content-Type: application/json
+
+{
+  "documentId": "55555555",
+  "fullName": "Sin Rol",
+  "phone": "3001111111",
+  "gender": 0,
+  "birthDate": null,
+  "email": null,
+  "doctorId": "{{doctorId}}",
+  "date": "2026-03-16T00:00:00",
+  "time": "09:00:00"
+}
+
+###
+
+### ================================================================
+### CA2.1 — Crear cita para paciente EXISTENTE (mismo doc 12345678)
+### El sistema debe reutilizar el paciente, no duplicarlo
+### Esperado: 201 Created (distinto appointmentId, mismo paciente)
+### ================================================================
+POST {{baseUrl}}/api/appointments
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "documentId": "12345678",
+  "fullName": "María López Torres",
+  "phone": "3001234567",
+  "gender": 1,
+  "birthDate": null,
+  "email": null,
+  "doctorId": "{{doctorId}}",
+  "date": "2026-03-16T00:00:00",
+  "time": "08:30:00"
+}
+
+###

@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="Piedrazul.API/Piedrazul.API.csproj" />
+  <Project Path="Piedrazul.Application/Piedrazul.Application.csproj" />
+  <Project Path="Piedrazul.Domain/Piedrazul.Domain.csproj" />
+  <Project Path="Piedrazul.Infrastructure/Piedrazul.Infrastructure.csproj" />
+  <Project Path="Piedrazul.Tests/Piedrazul.Tests.csproj" />
+</Solution>
