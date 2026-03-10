@@ -24,6 +24,7 @@ public class DoctorsController : ControllerBase
 
     /// <summary>GET /api/doctors — Lista médicos activos</summary>
     [HttpGet]
+    [AllowAnonymous]
     public async Task<IActionResult> GetAll()
     {
         var result = await _mediator.Send(new GetAllDoctorsQuery());
