@@ -9,3 +9,4 @@ C:\Users\juan_\Unicauca\2026-1\SotwareIII\Backend\Piedrazul\Piedrazul.Domain\obj
 C:\Users\juan_\Unicauca\2026-1\SotwareIII\Backend\Piedrazul\Piedrazul.Domain\obj\Debug\net10.0\refint\Piedrazul.Domain.dll
 C:\Users\juan_\Unicauca\2026-1\SotwareIII\Backend\Piedrazul\Piedrazul.Domain\obj\Debug\net10.0\Piedrazul.Domain.pdb
 C:\Users\juan_\Unicauca\2026-1\SotwareIII\Backend\Piedrazul\Piedrazul.Domain\obj\Debug\net10.0\ref\Piedrazul.Domain.dll
+C:\Users\juan_\Unicauca\2026-1\SotwareIII\Backend\Piedrazul\Piedrazul.Domain\obj\Debug\net10.0\Piedrazul.Domain.sourcelink.json

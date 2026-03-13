@@ -117,3 +117,4 @@ C:\Users\juan_\Unicauca\2026-1\SotwareIII\Backend\Piedrazul\Piedrazul.Tests\obj\
 C:\Users\juan_\Unicauca\2026-1\SotwareIII\Backend\Piedrazul\Piedrazul.Tests\obj\Debug\net10.0\ref\Piedrazul.Tests.dll
 C:\Users\juan_\Unicauca\2026-1\SotwareIII\Backend\Piedrazul\Piedrazul.Tests\bin\Debug\net10.0\Microsoft.Extensions.Configuration.Abstractions.dll
 C:\Users\juan_\Unicauca\2026-1\SotwareIII\Backend\Piedrazul\Piedrazul.Tests\bin\Debug\net10.0\Microsoft.Extensions.Primitives.dll
+C:\Users\juan_\Unicauca\2026-1\SotwareIII\Backend\Piedrazul\Piedrazul.Tests\obj\Debug\net10.0\Piedrazul.Tests.sourcelink.json

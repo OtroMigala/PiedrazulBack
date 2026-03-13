@@ -142,3 +142,4 @@ C:\Users\juan_\Unicauca\2026-1\SotwareIII\Backend\Piedrazul\Piedrazul.API\bin\De
 C:\Users\juan_\Unicauca\2026-1\SotwareIII\Backend\Piedrazul\Piedrazul.API\bin\Debug\net10.0\tr\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
 C:\Users\juan_\Unicauca\2026-1\SotwareIII\Backend\Piedrazul\Piedrazul.API\bin\Debug\net10.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
 C:\Users\juan_\Unicauca\2026-1\SotwareIII\Backend\Piedrazul\Piedrazul.API\bin\Debug\net10.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+C:\Users\juan_\Unicauca\2026-1\SotwareIII\Backend\Piedrazul\Piedrazul.API\obj\Debug\net10.0\Piedrazul.API.sourcelink.json

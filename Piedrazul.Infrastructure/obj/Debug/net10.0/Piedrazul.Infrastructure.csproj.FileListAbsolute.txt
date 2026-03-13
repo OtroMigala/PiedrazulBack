@@ -17,3 +17,4 @@ C:\Users\juan_\Unicauca\2026-1\SotwareIII\Backend\Piedrazul\Piedrazul.Infrastruc
 C:\Users\juan_\Unicauca\2026-1\SotwareIII\Backend\Piedrazul\Piedrazul.Infrastructure\obj\Debug\net10.0\Piedrazul.Infrastructure.pdb
 C:\Users\juan_\Unicauca\2026-1\SotwareIII\Backend\Piedrazul\Piedrazul.Infrastructure\obj\Debug\net10.0\Piedrazul.Infrastructure.genruntimeconfig.cache
 C:\Users\juan_\Unicauca\2026-1\SotwareIII\Backend\Piedrazul\Piedrazul.Infrastructure\obj\Debug\net10.0\ref\Piedrazul.Infrastructure.dll
+C:\Users\juan_\Unicauca\2026-1\SotwareIII\Backend\Piedrazul\Piedrazul.Infrastructure\obj\Debug\net10.0\Piedrazul.Infrastructure.sourcelink.json

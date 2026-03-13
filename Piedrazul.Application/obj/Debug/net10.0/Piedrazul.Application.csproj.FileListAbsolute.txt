@@ -13,3 +13,4 @@ C:\Users\juan_\Unicauca\2026-1\SotwareIII\Backend\Piedrazul\Piedrazul.Applicatio
 C:\Users\juan_\Unicauca\2026-1\SotwareIII\Backend\Piedrazul\Piedrazul.Application\obj\Debug\net10.0\refint\Piedrazul.Application.dll
 C:\Users\juan_\Unicauca\2026-1\SotwareIII\Backend\Piedrazul\Piedrazul.Application\obj\Debug\net10.0\Piedrazul.Application.pdb
 C:\Users\juan_\Unicauca\2026-1\SotwareIII\Backend\Piedrazul\Piedrazul.Application\obj\Debug\net10.0\ref\Piedrazul.Application.dll
+C:\Users\juan_\Unicauca\2026-1\SotwareIII\Backend\Piedrazul\Piedrazul.Application\obj\Debug\net10.0\Piedrazul.Application.sourcelink.json
