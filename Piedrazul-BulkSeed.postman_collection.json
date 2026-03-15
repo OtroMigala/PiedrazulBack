@@ -1,0 +1,216 @@
+{
+  "info": {
+    "name": "Piedrazul Bulk Seed Profesionales",
+    "_postman_id": "d9f278bb-8b0d-4214-8d7a-4f9d6ab35b2c",
+    "description": "Admin + login + plantilla para crear medicos/terapistas y horarios L-V 07:00-17:00",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5071"
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "doctorId",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "1 Seed Admin",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/seed/admin"
+      }
+    },
+    {
+      "name": "2 Login Admin",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 200', function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Token saved', function () {",
+              "  const body = pm.response.json();",
+              "  pm.expect(body).to.have.property('token');",
+              "  pm.collectionVariables.set('token', body.token);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"admin123\"\n}"
+        },
+        "url": "{{baseUrl}}/api/auth/login"
+      }
+    },
+    {
+      "name": "3 Create Professional (template)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 201', function () {",
+              "  pm.response.to.have.status(201);",
+              "});",
+              "",
+              "const body = pm.response.json();",
+              "if (body.doctorId) pm.collectionVariables.set('doctorId', body.doctorId);",
+              "if (body.DoctorId) pm.collectionVariables.set('doctorId', body.DoctorId);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"fullName\": \"Dr. Mateo Rojas\",\n  \"type\": 0,\n  \"specialty\": 2,\n  \"appointmentIntervalMinutes\": 30\n}"
+        },
+        "url": "{{baseUrl}}/api/doctors"
+      }
+    },
+    {
+      "name": "4 Add Schedule Monday",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"dayOfWeek\": 1,\n  \"startTime\": \"07:00:00\",\n  \"endTime\": \"17:00:00\"\n}"
+        },
+        "url": "{{baseUrl}}/api/doctors/{{doctorId}}/schedules"
+      }
+    },
+    {
+      "name": "5 Add Schedule Tuesday",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"dayOfWeek\": 2,\n  \"startTime\": \"07:00:00\",\n  \"endTime\": \"17:00:00\"\n}"
+        },
+        "url": "{{baseUrl}}/api/doctors/{{doctorId}}/schedules"
+      }
+    },
+    {
+      "name": "6 Add Schedule Wednesday",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"dayOfWeek\": 3,\n  \"startTime\": \"07:00:00\",\n  \"endTime\": \"17:00:00\"\n}"
+        },
+        "url": "{{baseUrl}}/api/doctors/{{doctorId}}/schedules"
+      }
+    },
+    {
+      "name": "7 Add Schedule Thursday",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"dayOfWeek\": 4,\n  \"startTime\": \"07:00:00\",\n  \"endTime\": \"17:00:00\"\n}"
+        },
+        "url": "{{baseUrl}}/api/doctors/{{doctorId}}/schedules"
+      }
+    },
+    {
+      "name": "8 Add Schedule Friday",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"dayOfWeek\": 5,\n  \"startTime\": \"07:00:00\",\n  \"endTime\": \"17:00:00\"\n}"
+        },
+        "url": "{{baseUrl}}/api/doctors/{{doctorId}}/schedules"
+      }
+    }
+  ]
+}

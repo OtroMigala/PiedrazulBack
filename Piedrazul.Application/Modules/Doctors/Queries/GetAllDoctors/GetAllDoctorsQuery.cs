@@ -1,9 +1,11 @@
 using MediatR;
+using Piedrazul.Domain.Enums;
 using Piedrazul.Domain.Interfaces;
 
 namespace Piedrazul.Application.Modules.Doctors.Queries.GetAllDoctors;
 
-public record GetAllDoctorsQuery : IRequest<IEnumerable<DoctorDto>>;
+/// <param name="Specialty">Filtro opcional. Si se omite, devuelve todos los médicos activos.</param>
+public record GetAllDoctorsQuery(Specialty? Specialty = null) : IRequest<IEnumerable<DoctorDto>>;
 
 public record DoctorDto(
     Guid Id,
@@ -26,6 +28,9 @@ public class GetAllDoctorsHandler : IRequestHandler<GetAllDoctorsQuery, IEnumera
         CancellationToken cancellationToken)
     {
         var doctors = await _doctorRepository.GetAllActiveAsync();
+
+        if (request.Specialty.HasValue)
+            doctors = doctors.Where(d => d.Specialty == request.Specialty.Value);
 
         return doctors.Select(d => new DoctorDto(
             Id: d.Id,

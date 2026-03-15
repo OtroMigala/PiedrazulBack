@@ -10,6 +10,7 @@ public record GetAppointmentsByDoctorAndDateQuery(
 
 // Lo que el Handler devuelve
 public record AppointmentsResult(
+    string Message,
     int Total,
     IEnumerable<AppointmentListItemDto> Appointments);
 

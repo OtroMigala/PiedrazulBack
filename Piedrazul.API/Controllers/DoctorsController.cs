@@ -7,6 +7,7 @@ using Piedrazul.Application.Modules.Doctors.Commands.DeleteDoctor;
 using Piedrazul.Application.Modules.Doctors.Commands.RemoveSchedule;
 using Piedrazul.Application.Modules.Doctors.Commands.UpdateDoctor;
 using Piedrazul.Application.Modules.Doctors.Queries.GetAllDoctors;
+using Piedrazul.Domain.Enums;
 
 namespace Piedrazul.API.Controllers;
 
@@ -22,12 +23,16 @@ public class DoctorsController : ControllerBase
         _mediator = mediator;
     }
 
-    /// <summary>GET /api/doctors — Lista médicos activos</summary>
+    /// <summary>
+    /// GET /api/doctors?specialty=NeuralTherapy — Lista médicos activos.
+    /// El parámetro specialty es opcional; si se omite devuelve todos.
+    /// Valores válidos: NeuralTherapy | Chiropractic | Physiotherapy
+    /// </summary>
     [HttpGet]
     [AllowAnonymous]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetAll([FromQuery] Specialty? specialty = null)
     {
-        var result = await _mediator.Send(new GetAllDoctorsQuery());
+        var result = await _mediator.Send(new GetAllDoctorsQuery(specialty));
         return Ok(result);
     }
 

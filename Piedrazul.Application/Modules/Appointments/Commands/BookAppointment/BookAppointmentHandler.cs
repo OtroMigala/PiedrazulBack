@@ -37,13 +37,20 @@ public class BookAppointmentHandler : IRequestHandler<BookAppointmentCommand, Bo
         if (doctor is null || !doctor.IsActive)
             throw new InvalidOperationException("El médico seleccionado no está disponible.");
 
-        // 3. Verificar que el slot no está ocupado
+        // 3. CA3.7 — Impedir cita duplicada: mismo paciente, mismo médico, mismo día
+        var alreadyBooked = await _appointmentRepository
+            .PatientHasAppointmentAsync(patient.Id, request.DoctorId, request.Date);
+        if (alreadyBooked)
+            throw new InvalidOperationException(
+                "Ya tienes una cita agendada con este profesional ese día.");
+
+        // 4. Verificar que el slot no está ocupado
         var slotOccupied = await _appointmentRepository
             .ExistsAsync(request.DoctorId, request.Date, request.Time);
         if (slotOccupied)
             throw new SlotNotAvailableException(request.Date, request.Time);
 
-        // 4. Crear la cita
+        // 5. Crear la cita
         var appointment = Appointment.Create(
             patientId: patient.Id,
             doctorId: doctor.Id,
@@ -59,6 +66,7 @@ public class BookAppointmentHandler : IRequestHandler<BookAppointmentCommand, Bo
             Message: "Cita agendada exitosamente.",
             Date: request.Date.ToString("dd/MM/yyyy"),
             Time: request.Time.ToString(@"hh\:mm"),
-            DoctorName: doctor.FullName);
+            DoctorName: doctor.FullName,
+            Specialty: doctor.Specialty.ToString());
     }
 }

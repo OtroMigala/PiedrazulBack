@@ -47,6 +47,26 @@ public class SeedController : ControllerBase
         return Ok(new { message = "Usuario admin creado.", username = "admin", password = "admin123" });
     }
 
+    /// <summary>POST /api/seed/scheduler — Crea el usuario agendador si no existe</summary>
+    [HttpPost("scheduler")]
+    public async Task<IActionResult> CreateScheduler()
+    {
+        const string username = "scheduler";
+        if (await _userRepository.UsernameExistsAsync(username))
+            return Conflict(new { message = $"El usuario '{username}' ya existe." });
+
+        var user = Domain.Entities.User.Create(
+            username,
+            _passwordHasher.Hash("scheduler123"),
+            "Agendador Principal",
+            UserRole.Scheduler,
+            "scheduler@piedrazul.com");
+
+        await _userRepository.AddAsync(user);
+
+        return Ok(new { message = "Usuario scheduler creado.", username, password = "scheduler123" });
+    }
+
     /// <summary>POST /api/seed/doctor — Crea un doctor de prueba con horarios Lun-Vie 08:00-17:00</summary>
     [HttpPost("doctor")]
     public async Task<IActionResult> CreateDoctor()

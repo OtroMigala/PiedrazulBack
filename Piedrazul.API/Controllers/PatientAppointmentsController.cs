@@ -33,10 +33,15 @@ public class PatientAppointmentsController : ControllerBase
             userId,
             body.DoctorId,
             body.Date,
-            time));
+            time,
+            body.CaptchaToken));
 
         return Ok(result);
     }
 }
 
-public record BookAppointmentBody(Guid DoctorId, DateTime Date, string Time);
+/// <param name="CaptchaToken">
+/// Token generado por el widget anti-bot en el frontend.
+/// Mock funcional en esta iteración; integrar con reCAPTCHA/hCaptcha en producción.
+/// </param>
+public record BookAppointmentBody(Guid DoctorId, DateTime Date, string Time, string CaptchaToken);

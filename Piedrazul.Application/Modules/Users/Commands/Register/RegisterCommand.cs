@@ -11,7 +11,8 @@ public record RegisterCommand(
     string Phone,
     Gender Gender,
     string? Email,
-    DateTime? BirthDate)
+    DateTime? BirthDate,
+    UserRole Role = UserRole.Patient)
     : IRequest<RegisterResult>;
 
 public record RegisterResult(

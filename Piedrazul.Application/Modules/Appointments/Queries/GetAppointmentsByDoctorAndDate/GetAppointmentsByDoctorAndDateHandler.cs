@@ -31,6 +31,13 @@ public class GetAppointmentsByDoctorAndDateHandler
                 Status: a.Status.ToString()))
             .ToList();
 
-        return new AppointmentsResult(Total: dtos.Count, Appointments: dtos);
+        var message = dtos.Any()
+            ? $"{dtos.Count} cita(s) encontrada(s)."
+            : "No hay citas registradas para esta búsqueda";
+
+        return new AppointmentsResult(
+            Message: message,
+            Total: dtos.Count,
+            Appointments: dtos);
     }
 }

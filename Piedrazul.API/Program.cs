@@ -39,8 +39,10 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IPatientRepository, PatientRepository>();
 
 // ── Servicios de infraestructura ───────────────────────────
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
+builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 
 // ── JWT Authentication ─────────────────────────────────────
 var jwtSecret = builder.Configuration["Jwt:Secret"]!;

@@ -24,7 +24,12 @@ public class AuthController : ControllerBase
         return Ok(result);
     }
 
-    /// <summary>POST /api/auth/register — Registro de paciente</summary>
+    /// <summary>
+    /// POST /api/auth/register
+    /// - Sin token: registra un paciente (Role omitido o Patient).
+    /// - Con token Admin: puede registrar cualquier rol (Admin, Scheduler, Doctor, Patient).
+    /// La validación de autorización para roles elevados se aplica en el handler.
+    /// </summary>
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterCommand command)
     {
