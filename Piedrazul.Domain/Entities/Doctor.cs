@@ -92,4 +92,21 @@ public class Doctor
 
         return slots;
     }
+
+    // Verifica si una hora concreta es un slot válido dentro del horario del médico
+    // (debe estar dentro del rango del día y alineado con el intervalo de atención)
+    public bool IsValidSlot(DateTime date, TimeSpan time)
+    {
+        var dayOfWeek = date.DayOfWeek;
+        var schedule = _schedules.FirstOrDefault(s => s.DayOfWeek == dayOfWeek);
+
+        if (schedule is null || !IsActive)
+            return false;
+
+        if (time < schedule.StartTime || time >= schedule.EndTime)
+            return false;
+
+        var offsetMinutes = (time - schedule.StartTime).TotalMinutes;
+        return offsetMinutes % AppointmentIntervalMinutes == 0;
+    }
 }
