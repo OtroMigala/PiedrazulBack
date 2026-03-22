@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Piedrazul.Infrastructure.Persistence;
@@ -11,9 +12,11 @@ using Piedrazul.Infrastructure.Persistence;
 namespace Piedrazul.Infrastructure.Migrations
 {
     [DbContext(typeof(PiedrazulDbContext))]
-    partial class PiedrazulDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260322221659_AddAuditLog")]
+    partial class AddAuditLog
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

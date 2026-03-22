@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\juan_\\Unicauca\\2026-1\\SotwareIII\\Backend\\Piedrazul\\Piedrazul.API\\Piedrazul.API.csproj": {}
+    "C:\\Users\\juan_\\Unicauca\\2026-1\\SotwareIII\\Backend\\Piedrazul\\Piedrazul.api\\Piedrazul.API.csproj": {}
   },
   "projects": {
-    "C:\\Users\\juan_\\Unicauca\\2026-1\\SotwareIII\\Backend\\Piedrazul\\Piedrazul.API\\Piedrazul.API.csproj": {
+    "C:\\Users\\juan_\\Unicauca\\2026-1\\SotwareIII\\Backend\\Piedrazul\\Piedrazul.api\\Piedrazul.API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\juan_\\Unicauca\\2026-1\\SotwareIII\\Backend\\Piedrazul\\Piedrazul.API\\Piedrazul.API.csproj",
+        "projectUniqueName": "C:\\Users\\juan_\\Unicauca\\2026-1\\SotwareIII\\Backend\\Piedrazul\\Piedrazul.api\\Piedrazul.API.csproj",
         "projectName": "Piedrazul.API",
-        "projectPath": "C:\\Users\\juan_\\Unicauca\\2026-1\\SotwareIII\\Backend\\Piedrazul\\Piedrazul.API\\Piedrazul.API.csproj",
+        "projectPath": "C:\\Users\\juan_\\Unicauca\\2026-1\\SotwareIII\\Backend\\Piedrazul\\Piedrazul.api\\Piedrazul.API.csproj",
         "packagesPath": "C:\\Users\\juan_\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\juan_\\Unicauca\\2026-1\\SotwareIII\\Backend\\Piedrazul\\Piedrazul.API\\obj\\",
+        "outputPath": "C:\\Users\\juan_\\Unicauca\\2026-1\\SotwareIII\\Backend\\Piedrazul\\Piedrazul.api\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\juan_\\AppData\\Roaming\\NuGet\\NuGet.Config"
