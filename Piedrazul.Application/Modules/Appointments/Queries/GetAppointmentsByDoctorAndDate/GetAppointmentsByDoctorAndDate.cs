@@ -5,7 +5,8 @@ namespace Piedrazul.Application.Modules.Appointments.Queries.GetAppointmentsByDo
 // Lo que React envía como query params
 public record GetAppointmentsByDoctorAndDateQuery(
     Guid DoctorId,
-    DateTime Date)
+    DateTime Date,
+    string? Search = null)   // filtro opcional por nombre o documento
     : IRequest<AppointmentsResult>;
 
 // Lo que el Handler devuelve

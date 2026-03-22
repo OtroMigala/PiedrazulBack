@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Piedrazul.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+90baed8bd3eebed6df6793c5db371783cf5d3222")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+edc488e2834052cf11b38a9ba920dc9e21a42e12")]
 [assembly: System.Reflection.AssemblyProductAttribute("Piedrazul.Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Piedrazul.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

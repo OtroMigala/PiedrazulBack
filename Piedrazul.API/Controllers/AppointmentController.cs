@@ -42,10 +42,11 @@ public class AppointmentsController : ControllerBase
     [Authorize(Roles = "Admin,Scheduler")]
     public async Task<IActionResult> GetByDoctorAndDate(
         [FromQuery] Guid doctorId,
-        [FromQuery] DateTime date)
+        [FromQuery] DateTime date,
+        [FromQuery] string? search = null)
     {
         var result = await _mediator.Send(
-            new GetAppointmentsByDoctorAndDateQuery(doctorId, date));
+            new GetAppointmentsByDoctorAndDateQuery(doctorId, date, search));
         return Ok(result);
     }
 

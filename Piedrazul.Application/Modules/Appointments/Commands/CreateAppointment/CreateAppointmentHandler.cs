@@ -1,4 +1,5 @@
 using MediatR;
+using Piedrazul.Application.Common.Interfaces;
 using Piedrazul.Domain.Entities;
 using Piedrazul.Domain.Exceptions;
 using Piedrazul.Domain.Interfaces;
@@ -11,15 +12,18 @@ public class CreateAppointmentHandler
     private readonly IAppointmentRepository _appointmentRepository;
     private readonly IDoctorRepository _doctorRepository;
     private readonly IPatientRepository _patientRepository;
+    private readonly IAuditService _auditService;
 
     public CreateAppointmentHandler(
         IAppointmentRepository appointmentRepository,
         IDoctorRepository doctorRepository,
-        IPatientRepository patientRepository)
+        IPatientRepository patientRepository,
+        IAuditService auditService)
     {
         _appointmentRepository = appointmentRepository;
         _doctorRepository = doctorRepository;
         _patientRepository = patientRepository;
+        _auditService = auditService;
     }
 
     public async Task<CreateAppointmentResult> Handle(
@@ -66,6 +70,14 @@ public class CreateAppointmentHandler
             createdByUserId: request.CreatedByUserId);
 
         await _appointmentRepository.AddAsync(appointment);
+
+        await _auditService.LogAppointmentCreatedAsync(
+            performedByUserId: request.CreatedByUserId,
+            appointmentId: appointment.Id,
+            patientId: patient.Id,
+            doctorId: doctor.Id,
+            date: request.Date,
+            time: request.Time);
 
         return new CreateAppointmentResult(
             AppointmentId: appointment.Id,

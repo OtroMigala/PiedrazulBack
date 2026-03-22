@@ -20,7 +20,17 @@ public class GetAppointmentsByDoctorAndDateHandler
         var appointments = await _appointmentRepository
             .GetByDoctorAndDateAsync(request.DoctorId, request.Date);
 
-        var dtos = appointments
+        var filtered = appointments.AsEnumerable();
+
+        if (!string.IsNullOrWhiteSpace(request.Search))
+        {
+            var term = request.Search.Trim().ToLowerInvariant();
+            filtered = filtered.Where(a =>
+                a.Patient!.FullName.ToLowerInvariant().Contains(term) ||
+                a.Patient.DocumentId.Contains(term));
+        }
+
+        var dtos = filtered
             .OrderBy(a => a.Time)
             .Select(a => new AppointmentListItemDto(
                 Id: a.Id,

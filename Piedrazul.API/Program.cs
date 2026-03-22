@@ -43,6 +43,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
+builder.Services.AddScoped<IAuditService, AuditService>();
 
 // ── JWT Authentication ─────────────────────────────────────
 var jwtSecret = builder.Configuration["Jwt:Secret"]!;
