@@ -13,19 +13,22 @@ public class RegisterHandler : IRequestHandler<RegisterCommand, RegisterResult>
     private readonly IPasswordHasher _passwordHasher;
     private readonly IJwtService _jwtService;
     private readonly ICurrentUserService _currentUser;
+    private readonly IUnitOfWork _unitOfWork;
 
     public RegisterHandler(
         IUserRepository userRepository,
         IPatientRepository patientRepository,
         IPasswordHasher passwordHasher,
         IJwtService jwtService,
-        ICurrentUserService currentUser)
+        ICurrentUserService currentUser,
+        IUnitOfWork unitOfWork)
     {
         _userRepository = userRepository;
         _patientRepository = patientRepository;
         _passwordHasher = passwordHasher;
         _jwtService = jwtService;
         _currentUser = currentUser;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<RegisterResult> Handle(
@@ -43,6 +46,10 @@ public class RegisterHandler : IRequestHandler<RegisterCommand, RegisterResult>
         if (await _userRepository.UsernameExistsAsync(request.Username.ToLower()))
             throw new InvalidOperationException("El nombre de usuario ya está en uso.");
 
+        if (request.Role == UserRole.Patient &&
+            await _patientRepository.DocumentIdExistsAsync(request.DocumentId))
+            throw new InvalidOperationException("El número de documento ya está registrado.");
+
         var passwordHash = _passwordHasher.Hash(request.Password);
 
         var user = User.Create(
@@ -52,20 +59,31 @@ public class RegisterHandler : IRequestHandler<RegisterCommand, RegisterResult>
             request.Role,
             request.Email);
 
-        await _userRepository.AddAsync(user);
-
-        // Solo se crea perfil de paciente cuando el rol es Patient
-        if (request.Role == UserRole.Patient)
+        await _unitOfWork.BeginTransactionAsync(cancellationToken);
+        try
         {
-            var patient = Patient.Create(
-                request.DocumentId,
-                request.FullName,
-                request.Phone,
-                request.Gender,
-                request.BirthDate,
-                request.Email);
-            patient.AssignUser(user.Id);
-            await _patientRepository.AddAsync(patient);
+            await _userRepository.AddAsync(user);
+
+            // Solo se crea perfil de paciente cuando el rol es Patient
+            if (request.Role == UserRole.Patient)
+            {
+                var patient = Patient.Create(
+                    request.DocumentId,
+                    request.FullName,
+                    request.Phone,
+                    request.Gender,
+                    request.BirthDate,
+                    request.Email);
+                patient.AssignUser(user.Id);
+                await _patientRepository.AddAsync(patient);
+            }
+
+            await _unitOfWork.CommitAsync(cancellationToken);
+        }
+        catch
+        {
+            await _unitOfWork.RollbackAsync(cancellationToken);
+            throw;
         }
 
         var token = _jwtService.GenerateToken(user);

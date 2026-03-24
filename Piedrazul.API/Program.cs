@@ -39,6 +39,8 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IPatientRepository, PatientRepository>();
 
 // ── Servicios de infraestructura ───────────────────────────
+builder.Services.AddScoped<Piedrazul.Application.Common.Interfaces.IUnitOfWork,
+    Piedrazul.Infrastructure.Persistence.UnitOfWork>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();

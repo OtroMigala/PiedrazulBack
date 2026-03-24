@@ -17,6 +17,9 @@ public class PatientRepository : IPatientRepository
     public async Task<Patient?> GetByDocumentIdAsync(string documentId)
         => await _context.Patients.FirstOrDefaultAsync(p => p.DocumentId == documentId);
 
+    public async Task<bool> DocumentIdExistsAsync(string documentId)
+        => await _context.Patients.AnyAsync(p => p.DocumentId == documentId);
+
     public async Task<Patient?> GetByIdAsync(Guid id)
         => await _context.Patients.FirstOrDefaultAsync(p => p.Id == id);
 
