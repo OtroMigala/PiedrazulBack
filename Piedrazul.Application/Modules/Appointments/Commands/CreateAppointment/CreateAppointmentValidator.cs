@@ -29,7 +29,11 @@ public class CreateAppointmentValidator : AbstractValidator<CreateAppointmentCom
             .GreaterThanOrEqualTo(DateTime.UtcNow.Date)
             .WithMessage("No se puede agendar una cita en una fecha pasada.");
 
+        RuleFor(x => x.Gender)
+            .IsInEnum().WithMessage("El género debe ser Male, Female u Other.");
+
         RuleFor(x => x.Time)
-            .NotEqual(TimeSpan.Zero).WithMessage("La hora de la cita es obligatoria.");
+            .NotEqual(TimeSpan.Zero).WithMessage("La hora de la cita es obligatoria.")
+            .LessThan(TimeSpan.FromHours(24)).WithMessage("La hora debe estar entre 00:01 y 23:59.");
     }
 }

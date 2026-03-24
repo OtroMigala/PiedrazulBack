@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Piedrazul.Application.Common.Behaviors;
 using Piedrazul.Application.Common.Interfaces;
+using Piedrazul.Application.Common.Options;
 using Piedrazul.Domain.Interfaces;
 using Piedrazul.Infrastructure.Persistence;
 using Piedrazul.Infrastructure.Repositories;
@@ -31,6 +32,10 @@ builder.Services.AddMediatR(cfg =>
 // ── FluentValidation (escanea todos los validators) ────────
 builder.Services.AddValidatorsFromAssembly(
     typeof(Piedrazul.Application.Common.Behaviors.ValidationBehavior<,>).Assembly);
+
+// ── Opciones de configuración ──────────────────────────────
+builder.Services.Configure<SchedulingOptions>(
+    builder.Configuration.GetSection(SchedulingOptions.SectionName));
 
 // ── Repositorios ───────────────────────────────────────────
 builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
