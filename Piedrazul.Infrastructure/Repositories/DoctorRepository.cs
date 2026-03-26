@@ -16,7 +16,14 @@ public class DoctorRepository : IDoctorRepository
 
     public async Task<IEnumerable<Doctor>> GetAllActiveAsync()
         => await _context.Doctors
+            .Include(d => d.Schedules)
             .Where(d => d.IsActive)
+            .OrderBy(d => d.FullName)
+            .ToListAsync();
+
+    public async Task<IEnumerable<Doctor>> GetAllAsync()
+        => await _context.Doctors
+            .Include(d => d.Schedules)
             .OrderBy(d => d.FullName)
             .ToListAsync();
 
