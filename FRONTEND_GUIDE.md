@@ -1,6 +1,6 @@
 # Guía de API — Piedrazul Backend
 
-> Dirigida al equipo frontend. Base URL de desarrollo: `https://localhost:{puerto}/api`
+> Dirigida al equipo frontend, para tener una vista concentrica para su desarrollo. Base URL de desarrollo: `https://localhost:{puerto}/api`
 
 ---
 
