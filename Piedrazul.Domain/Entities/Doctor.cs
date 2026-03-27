@@ -12,7 +12,7 @@ public class Doctor
     public bool IsActive { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
-    // Relación con el usuario del sistema (opcional)
+    // Relación con el usuario del sistema (No obligatorio)
     public Guid? UserId { get; private set; }
 
     // Horarios de disponibilidad por día
@@ -71,7 +71,7 @@ public class Doctor
         _schedules.Remove(schedule);
     }
 
-    // Calcula los slots disponibles para una fecha dada
+    // Calcula los slots o espacios disponibles para una fecha dada
     public IEnumerable<TimeSpan> GetAvailableSlots(DateTime date, IEnumerable<TimeSpan> occupiedSlots)
     {
         var dayOfWeek = date.DayOfWeek;
@@ -94,7 +94,7 @@ public class Doctor
     }
 
     // Verifica si una hora concreta es un slot válido dentro del horario del médico
-    // (debe estar dentro del rango del día y alineado con el intervalo de atención)
+    // (debe estar dentro del rango del día y alineado con el intervalo de atención para poder dar ejecucion)
     public bool IsValidSlot(DateTime date, TimeSpan time)
     {
         var dayOfWeek = date.DayOfWeek;
