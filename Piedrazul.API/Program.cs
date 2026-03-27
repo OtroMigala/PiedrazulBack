@@ -17,7 +17,7 @@ AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ── Base de datos ──────────────────────────────────────────
+// ── Base de datos (BD) ──────────────────────────────────────────
 builder.Services.AddDbContext<PiedrazulDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("Default")));
 
@@ -73,7 +73,7 @@ builder.Services
 
 builder.Services.AddAuthorization();
 
-// ── CORS para React ────────────────────────────────────────
+// ── CORS para React y manejo ────────────────────────────────────────
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("Frontend", policy =>
