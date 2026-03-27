@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Piedrazul.Application.Modules.Doctors.Commands.AddSchedule;
 using Piedrazul.Application.Modules.Doctors.Commands.CreateDoctor;
+using Piedrazul.Application.Modules.Doctors.Commands.ActivateDoctor;
 using Piedrazul.Application.Modules.Doctors.Commands.DeleteDoctor;
 using Piedrazul.Application.Modules.Doctors.Commands.RemoveSchedule;
 using Piedrazul.Application.Modules.Doctors.Commands.UpdateDoctor;
@@ -30,9 +31,11 @@ public class DoctorsController : ControllerBase
     /// </summary>
     [HttpGet]
     [AllowAnonymous]
-    public async Task<IActionResult> GetAll([FromQuery] Specialty? specialty = null)
+    public async Task<IActionResult> GetAll(
+        [FromQuery] Specialty? specialty = null,
+        [FromQuery] bool includeInactive = false)
     {
-        var result = await _mediator.Send(new GetAllDoctorsQuery(specialty));
+        var result = await _mediator.Send(new GetAllDoctorsQuery(specialty, includeInactive));
         return Ok(result);
     }
 
@@ -60,6 +63,15 @@ public class DoctorsController : ControllerBase
     public async Task<IActionResult> Delete(Guid id)
     {
         await _mediator.Send(new DeleteDoctorCommand(id));
+        return NoContent();
+    }
+
+    /// <summary>POST /api/doctors/{id}/activate — Reactiva un médico (Admin)</summary>
+    [HttpPost("{id:guid}/activate")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> Activate(Guid id)
+    {
+        await _mediator.Send(new ActivateDoctorCommand(id));
         return NoContent();
     }
 

@@ -5,6 +5,7 @@ namespace Piedrazul.Domain.Interfaces;
 public interface IDoctorRepository
 {
     Task<IEnumerable<Doctor>> GetAllActiveAsync();
+    Task<IEnumerable<Doctor>> GetAllAsync();
     Task<Doctor?> GetByIdAsync(Guid id);
     Task<Doctor?> GetByIdWithSchedulesAsync(Guid id);
     Task AddAsync(Doctor doctor);

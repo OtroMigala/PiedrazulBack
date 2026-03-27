@@ -14,6 +14,7 @@ public class PiedrazulDbContext : DbContext
     public DbSet<DoctorSchedule> DoctorSchedules => Set<DoctorSchedule>();
     public DbSet<Appointment> Appointments => Set<Appointment>();
     public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
+    public DbSet<SchedulingSettings> SchedulingSettings => Set<SchedulingSettings>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

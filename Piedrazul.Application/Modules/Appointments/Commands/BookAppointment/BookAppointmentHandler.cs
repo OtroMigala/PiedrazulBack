@@ -32,10 +32,14 @@ public class BookAppointmentHandler : IRequestHandler<BookAppointmentCommand, Bo
                 "No se encontró un perfil de paciente asociado a este usuario. " +
                 "Por favor contacte al administrador.");
 
-        // 2. Verificar que el médico existe y está activo
-        var doctor = await _doctorRepository.GetByIdAsync(request.DoctorId);
+        // 2. Verificar que el médico existe, está activo y cargar sus horarios
+        var doctor = await _doctorRepository.GetByIdWithSchedulesAsync(request.DoctorId);
         if (doctor is null || !doctor.IsActive)
             throw new InvalidOperationException("El médico seleccionado no está disponible.");
+
+        // 2b. Verificar que la hora solicitada es un slot válido del horario del médico
+        if (!doctor.IsValidSlot(request.Date, request.Time))
+            throw new SlotNotAvailableException(request.Date, request.Time);
 
         // 3. CA3.7 — Impedir cita duplicada: mismo paciente, mismo médico, mismo día
         var alreadyBooked = await _appointmentRepository

@@ -1,5 +1,6 @@
 using MediatR;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
+using Piedrazul.Application.Common.Options;
 using Piedrazul.Domain.Interfaces;
 
 namespace Piedrazul.Application.Modules.Scheduling.Queries.GetAvailableSlots;
@@ -9,16 +10,16 @@ public class GetAvailableSlotsHandler
 {
     private readonly IDoctorRepository _doctorRepository;
     private readonly IAppointmentRepository _appointmentRepository;
-    private readonly IConfiguration _configuration;
+    private readonly SchedulingOptions _schedulingOptions;
 
     public GetAvailableSlotsHandler(
         IDoctorRepository doctorRepository,
         IAppointmentRepository appointmentRepository,
-        IConfiguration configuration)
+        IOptions<SchedulingOptions> schedulingOptions)
     {
         _doctorRepository = doctorRepository;
         _appointmentRepository = appointmentRepository;
-        _configuration = configuration;
+        _schedulingOptions = schedulingOptions.Value;
     }
 
     public async Task<AvailableSlotsResult> Handle(
@@ -26,8 +27,7 @@ public class GetAvailableSlotsHandler
         CancellationToken cancellationToken)
     {
         // 0. Validar ventana de agendamiento
-        var weeksAheadStr = _configuration["Scheduling:WeeksAhead"];
-        var weeksAhead = int.TryParse(weeksAheadStr, out var w) ? w : 4;
+        var weeksAhead = _schedulingOptions.WeeksAhead;
         var maxDate = DateTime.UtcNow.Date.AddDays(weeksAhead * 7);
         if (request.Date.Date > maxDate)
             throw new InvalidOperationException(

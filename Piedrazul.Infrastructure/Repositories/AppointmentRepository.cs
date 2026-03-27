@@ -61,4 +61,12 @@ public class AppointmentRepository : IAppointmentRepository
         _context.Appointments.Update(appointment);
         await _context.SaveChangesAsync();
     }
+    public async Task<IEnumerable<Appointment>> GetByUserIdAsync(Guid userId)
+    => await _context.Appointments
+        .Include(a => a.Doctor)
+        .Include(a => a.Patient)
+        .Where(a => a.Patient!.UserId == userId)
+        .OrderByDescending(a => a.Date)
+        .ThenBy(a => a.Time)
+        .ToListAsync();
 }

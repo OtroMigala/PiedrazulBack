@@ -1,7 +1,7 @@
 # Piedrazul — Backend
 
 > Sistema de gestión de citas médicas y terapéuticas para clínica de salud natural.
-> Backend RESTful construido con **.NET 10**, siguiendo **Clean Architecture** y el patrón **CQRS** con MediatR
+> Backend RESTful construido con **.NET 10**, siguiendo **Clean Architecture** y el patrón **CQRS** con MediatR.
 
 ---
 
