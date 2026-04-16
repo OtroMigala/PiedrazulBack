@@ -33,4 +33,28 @@ public class AuditService : IAuditService
         await _context.AuditLogs.AddAsync(log);
         await _context.SaveChangesAsync();
     }
+
+    public async Task LogAppointmentRescheduledAsync(
+        Guid performedByUserId,
+        Guid oldAppointmentId,
+        Guid newAppointmentId,
+        Guid patientId,
+        Guid doctorId,
+        DateTime newDate,
+        TimeSpan newTime)
+    {
+        // Registra el re-agendamiento apuntando a la cita original.
+        // La nueva cita se puede encontrar via Appointment.RescheduledFromId == oldAppointmentId.
+        var log = AuditLog.Create(
+            action: "AppointmentRescheduled",
+            performedByUserId: performedByUserId,
+            appointmentId: oldAppointmentId,
+            patientId: patientId,
+            doctorId: doctorId,
+            appointmentDate: newDate,
+            appointmentTime: newTime);
+
+        await _context.AuditLogs.AddAsync(log);
+        await _context.SaveChangesAsync();
+    }
 }

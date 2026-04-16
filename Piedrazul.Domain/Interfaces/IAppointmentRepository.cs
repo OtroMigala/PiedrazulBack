@@ -12,4 +12,5 @@ public interface IAppointmentRepository
     Task AddAsync(Appointment appointment);
     Task UpdateAsync(Appointment appointment);
     Task<IEnumerable<Appointment>> GetByUserIdAsync(Guid userId);
+    Task<IEnumerable<Appointment>> GetHistoryChainAsync(Guid appointmentId);
 }

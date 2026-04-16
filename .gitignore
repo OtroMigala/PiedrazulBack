@@ -36,3 +36,6 @@ artifacts/
 appsettings.Development.json
 appsettings.Local.json
 secrets.json
+
+## Claude Code (local AI assistant config)
+.claude/

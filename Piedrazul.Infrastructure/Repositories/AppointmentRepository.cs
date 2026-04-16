@@ -62,11 +62,44 @@ public class AppointmentRepository : IAppointmentRepository
         await _context.SaveChangesAsync();
     }
     public async Task<IEnumerable<Appointment>> GetByUserIdAsync(Guid userId)
-    => await _context.Appointments
-        .Include(a => a.Doctor)
-        .Include(a => a.Patient)
-        .Where(a => a.Patient!.UserId == userId)
-        .OrderByDescending(a => a.Date)
-        .ThenBy(a => a.Time)
-        .ToListAsync();
+        => await _context.Appointments
+            .Include(a => a.Doctor)
+            .Include(a => a.Patient)
+            .Where(a => a.Patient!.UserId == userId)
+            .OrderByDescending(a => a.Date)
+            .ThenBy(a => a.Time)
+            .ToListAsync();
+
+    public async Task<IEnumerable<Appointment>> GetHistoryChainAsync(Guid appointmentId)
+    {
+        var appointment = await GetByIdAsync(appointmentId);
+        if (appointment is null)
+            return Enumerable.Empty<Appointment>();
+
+        var chain = new List<Appointment> { appointment };
+
+        // Recorrer hacia atrás: encontrar los predecesores via RescheduledFromId
+        var current = appointment;
+        while (current.RescheduledFromId.HasValue)
+        {
+            current = await GetByIdAsync(current.RescheduledFromId.Value);
+            if (current is null) break;
+            chain.Insert(0, current);
+        }
+
+        // Recorrer hacia adelante: encontrar el sucesor (la cita que apunta a la última en la cadena)
+        var last = chain.Last();
+        while (true)
+        {
+            var child = await _context.Appointments
+                .Include(a => a.Patient)
+                .Include(a => a.Doctor)
+                .FirstOrDefaultAsync(a => a.RescheduledFromId == last.Id);
+            if (child is null) break;
+            chain.Add(child);
+            last = child;
+        }
+
+        return chain;
+    }
 }
